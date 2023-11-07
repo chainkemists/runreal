@@ -1,0 +1,38 @@
+{
+	"imports": {
+		"/": "./src/",
+		"./": "./",
+		"std/": "https://deno.land/std@0.204.0/"
+	},
+	"tasks": {
+		"start": "deno run -A --watch=src src/index.ts",
+		"engine-install": "deno run -A src/index.ts engine install --branch main --config-path E:\\RX\\runreal\\runreal.config.json",
+		"engine-update": "deno run -A src/index.ts engine update --branch main --setup --config-path E:\\RX\\runreal\\runreal.config.json",
+		"engine-clean": "deno run -A src/index.ts engine update -c -b main -r origin -s -g E:\\RX\\.gitdepscache",
+		"engine-setup": "deno run -A src/index.ts engine setup -s -g E:\\RX\\.gitdepscache",
+		"engine-cache": "deno run -A src/index.ts engine cache -d --cache-path E:\\RX\\.cache --zstd",
+		"engine-restore": "deno run -A src/index.ts engine restore --cache-path E:\\RX\\.cache",
+		"build-editor": "deno run -A src/index.ts build UnrealEditor",
+		"build-scw": "deno run -A src/index.ts build ShaderCompileWorker",
+		"compile-win": "deno compile -A --target x86_64-pc-windows-msvc --output build/runreal-win-x64 src/index.ts",
+		"compile-linux": "deno compile -A --target x86_64-unknown-linux-gnu --output build/runreal-linux-x64 src/index.ts",
+		"compile-macos": "deno compile -A --target aarch64-apple-darwin --output build/runreal-macos-arm src/index.ts"
+	},
+	"lint": {
+		"include": ["src/"],
+		"rules": {
+			"tags": ["recommended"],
+			"include": ["ban-untagged-todo"],
+			"exclude": ["no-unused-vars", "no-explicit-any"]
+		}
+	},
+	"fmt": {
+		"include": ["src/"],
+		"useTabs": true,
+		"lineWidth": 120,
+		"indentWidth": 2,
+		"singleQuote": true,
+		"proseWrap": "preserve",
+		"semiColons": false
+	}
+}

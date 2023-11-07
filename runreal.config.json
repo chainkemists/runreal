@@ -1,0 +1,21 @@
+{
+	"engine": {
+		"source": "https://github.com/Chainkemists/UnrealEngine-Internal",
+		"path": "E:\\RX\\UnrealEngine",
+		"branch": "main",
+		"binaryCachePath": "E:\\RX\\.cache",
+		"binaryOutputPath": "E:\\RX\\.dist"
+	},
+	"project": {
+		"path": "E:\\RX\\Obsidian"
+	},
+	"git": {
+		"dependenciesCachePath": "E:\\RX\\.gitdepscache",
+		"mirrors": true,
+		"mirrorsPath": "E:\\RX\\.mirrors"
+	},
+	"build": {
+		"foo": "xxx",
+		"arr": [4,5,6]
+	}
+}
