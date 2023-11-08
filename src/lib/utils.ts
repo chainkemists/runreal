@@ -264,8 +264,8 @@ export const getGitIgnoreList = (
 	return items
 }
 
-/* 
-Temporarily copy the scripts to the ${enginePath}/BuildGraph folder	
+/*
+Temporarily copy the scripts to the ${enginePath}/BuildGraph folder
 BuildGraph expects scripts to be contained inside the engine folder
 until we apply a patch to BuildGraph that allows external scripts
 */

@@ -1,5 +1,5 @@
 import { path } from '/deps.ts'
-import { exec, findProjectFile, copyBuildGraphScripts } from './utils.ts'
+import { copyBuildGraphScripts, exec, findProjectFile } from './utils.ts'
 
 interface EngineVersionData {
 	MajorVersion: number
@@ -216,7 +216,7 @@ export abstract class Engine {
 		const uatArgs = [
 			'BuildGraph',
 			`-Script=${bgScriptPath}`,
-			...args
+			...args,
 		]
 		await this.runUAT(uatArgs)
 	}

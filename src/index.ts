@@ -9,7 +9,7 @@ import { uat } from './commands/uat.ts'
 import { ubt } from './commands/ubt.ts'
 import { pkg } from './commands/pkg.ts'
 import { buildgraph } from './commands/buildgraph/index.ts'
-import { searchForConfigFile, mergeConfig } from './lib/config.ts'
+import { mergeConfig, searchForConfigFile } from './lib/config.ts'
 
 export type GlobalOptions = typeof cmd extends
 	Command<void, void, void, [], infer Options extends Record<string, unknown>> ? Options
