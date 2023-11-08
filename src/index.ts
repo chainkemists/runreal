@@ -8,6 +8,7 @@ import { init } from './commands/init.ts'
 import { uat } from './commands/uat.ts'
 import { ubt } from './commands/ubt.ts'
 import { pkg } from './commands/pkg.ts'
+import { buildgraph } from './commands/buildgraph/index.ts'
 import { searchForConfigFile, mergeConfig } from './lib/config.ts'
 
 export type GlobalOptions = typeof cmd extends
@@ -46,4 +47,5 @@ await cmd
 	.command('uat', uat)
 	.command('ubt', ubt)
 	.command('pkg', pkg)
+	.command('buildgraph', buildgraph)
 	.parse(Deno.args)

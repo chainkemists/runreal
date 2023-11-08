@@ -1,5 +1,5 @@
 import { path } from '/deps.ts'
-import { exec, findProjectFile } from './utils.ts'
+import { exec, findProjectFile, copyBuildGraphScripts } from './utils.ts'
 
 interface EngineVersionData {
 	MajorVersion: number
@@ -202,6 +202,23 @@ export abstract class Engine {
 		const args = [target, configuration, platform, ...extraArgs]
 		console.log('[runClean]', args)
 		await exec(cleanScript, args)
+	}
+
+	async runBuildGraph(buildGraphScript: string, args: string[] = []) {
+		let bgScriptPath = path.resolve(buildGraphScript)
+		if (!bgScriptPath.endsWith('.xml')) {
+			throw new Error('Invalid buildgraph script')
+		}
+		if (path.relative(this.enginePath, bgScriptPath).startsWith('..')) {
+			console.log('Buildgraph script is outside of engine folder, copying...')
+			bgScriptPath = await copyBuildGraphScripts(this.enginePath, bgScriptPath)
+		}
+		const uatArgs = [
+			'BuildGraph',
+			`-Script=${bgScriptPath}`,
+			...args
+		]
+		await this.runUAT(uatArgs)
 	}
 }
 

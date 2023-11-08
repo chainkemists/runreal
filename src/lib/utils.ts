@@ -263,3 +263,22 @@ export const getGitIgnoreList = (
 	})
 	return items
 }
+
+/* 
+Temporarily copy the scripts to the ${enginePath}/BuildGraph folder	
+BuildGraph expects scripts to be contained inside the engine folder
+until we apply a patch to BuildGraph that allows external scripts
+*/
+export const copyBuildGraphScripts = async (enginePath: string, bgScriptPath: string) => {
+	const engineBg = path.join(enginePath, 'BuildGraph')
+	await Deno.mkdir(engineBg, { recursive: true })
+	for await (const entry of Deno.readDir(path.dirname(bgScriptPath))) {
+		if (path.extname(entry.name) === '.xml') {
+			await Deno.copyFile(
+				path.join(path.dirname(bgScriptPath), entry.name),
+				path.join(engineBg, entry.name),
+			)
+		}
+	}
+	return path.join(engineBg, path.basename(bgScriptPath))
+}
