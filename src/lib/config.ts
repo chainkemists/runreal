@@ -18,8 +18,12 @@ export let config: Partial<RunrealConfig> = {
 export function searchForConfigFile(): string | null {
 	const cwd = Deno.cwd()
 	const configPath = path.join(cwd, 'runreal.config.json')
-	if (Deno.statSync(configPath).isFile) {
-		return configPath
+	try {
+		if (Deno.statSync(configPath).isFile) {
+			return configPath
+		}
+	} catch (e) {
+		// Ignore
 	}
 	return null
 }
