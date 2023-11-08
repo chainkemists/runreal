@@ -15,6 +15,15 @@ export let config: Partial<RunrealConfig> = {
 	},
 }
 
+export function searchForConfigFile(): string | null {
+	const cwd = Deno.cwd()
+	const configPath = path.join(cwd, 'runreal.config.json')
+	if (Deno.statSync(configPath).isFile) {
+		return configPath
+	}
+	return null
+}
+
 export function readConfigFile(configPath: string): Partial<RunrealConfig> | null {
 	try {
 		const data = Deno.readTextFileSync(path.resolve(configPath))

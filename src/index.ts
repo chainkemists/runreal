@@ -8,11 +8,16 @@ import { init } from './commands/init.ts'
 import { uat } from './commands/uat.ts'
 import { ubt } from './commands/ubt.ts'
 import { pkg } from './commands/pkg.ts'
-import { mergeConfig } from './lib/config.ts'
+import { searchForConfigFile, mergeConfig } from './lib/config.ts'
 
 export type GlobalOptions = typeof cmd extends
 	Command<void, void, void, [], infer Options extends Record<string, unknown>> ? Options
 	: never
+
+// Check Deno.cwd() for runreal.config.json
+if (searchForConfigFile()) {
+	mergeConfig(searchForConfigFile()!)
+}
 
 const cmd = new Command()
 	.option('-v, --verbose', 'Verbose')
