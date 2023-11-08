@@ -207,9 +207,17 @@ export const cloneRepo = async (
 }
 
 export const runEngineSetup = async (
-	enginePath: string,
-	gitDependsCache?: string,
-	excludes: string[] = ['FeaturePacks/', 'Templates/', 'Samples/'],
+	{
+		enginePath,
+		gitDependsCache,
+		excludes = ['FeaturePacks/', 'Templates/', 'Samples/'],
+		dryRun = false,
+	}: {
+		enginePath: string
+		gitDependsCache?: string
+		excludes?: string[]
+		dryRun?: boolean
+	},
 ) => {
 	const engine = await createEngine(enginePath)
 	// TODO(xenon): figure out how many threads available on current cpu
@@ -221,7 +229,7 @@ export const runEngineSetup = async (
 	excludes.forEach((exclude) => {
 		args.push(`--exclude=${exclude}`)
 	})
-	const deps = await exec(engine.getGitDependencesBin(), args, { cwd: enginePath })
+	const deps = await exec(engine.getGitDependencesBin(), args, { cwd: enginePath, dryRun })
 }
 
 export const deleteEngineHooks = async (enginePath: string) => {

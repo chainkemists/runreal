@@ -19,6 +19,6 @@ export const setup = new Command<GlobalOptions>()
 		const { gitdepends, gitdependscache } = options as SetupOptions
 		const { engine: { path: enginePath } } = validateConfig(mergeWithCliOptions(options as CliOptions))
 		if (gitdepends) {
-			await runEngineSetup(enginePath, gitdependscache)
+			await runEngineSetup({ enginePath, gitDependsCache: gitdependscache })
 		}
 	})

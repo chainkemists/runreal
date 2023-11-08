@@ -9,7 +9,7 @@ export type CacheOptions = typeof cache extends Command<any, any, infer Options,
 
 export const cache = new Command<GlobalOptions>()
 	.description('cache engine build')
-	.option('-d, --debug', 'debug', { default: false })
+	.option('--debug', 'debug', { default: false })
 	.option('-c, --cache-path <cachePath:file>', 'cache directory', {
 		required: true,
 		default: 'E:\\RX\\.cache',

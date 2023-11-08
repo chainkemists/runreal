@@ -30,6 +30,7 @@ export const update = new Command<GlobalOptions>()
 		'git dependencies cache folder',
 		{ depends: ['setup'] },
 	)
+	.option('-d, --dry-run', 'Dry run', { default: false })
 	.action(async (options, ...args) => {
 		const {
 			branch,
@@ -38,6 +39,7 @@ export const update = new Command<GlobalOptions>()
 			setup,
 			gitCleanFlags,
 			// gitDependenciesCachePath,
+			dryRun,
 		} = options as UpdateOptions
 		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
 		const isRepo = await isGitRepo(cfg.engine.path)
@@ -47,23 +49,34 @@ export const update = new Command<GlobalOptions>()
 			)
 		}
 		if (clean) {
-			const clean = await exec('git', ['clean', gitCleanFlags ? gitCleanFlags : '-fxd'], { cwd: cfg.engine.path })
+			const clean = await exec('git', [
+				'clean',
+				gitCleanFlags ? gitCleanFlags : '-fxd',
+			], { cwd: cfg.engine.path, dryRun })
 		}
 		// Prevent the default engine hooks from running
 		await deleteEngineHooks(cfg.engine.path)
-		const fetch = await exec('git', ['fetch', remote, branch], {
-			cwd: cfg.engine.path,
-		})
+
+		const fetch = await exec('git', [
+			'fetch',
+			remote,
+			branch,
+		], { cwd: cfg.engine.path, dryRun })
+
 		const checkout = await exec('git', [
 			'checkout',
 			'--quiet',
 			'--force',
 			branch,
-		], { cwd: cfg.engine.path })
-		const reset = await exec('git', ['reset', '--hard', 'FETCH_HEAD'], {
-			cwd: cfg.engine.path,
-		})
+		], { cwd: cfg.engine.path, dryRun })
+
+		const reset = await exec('git', [
+			'reset',
+			'--hard',
+			'FETCH_HEAD',
+		], { cwd: cfg.engine.path, dryRun })
+
 		if (setup) {
-			await runEngineSetup(cfg.engine.path, cfg.git.dependenciesCachePath)
+			await runEngineSetup({ enginePath: cfg.engine.path, gitDependsCache: cfg.git.dependenciesCachePath, dryRun })
 		}
 	})

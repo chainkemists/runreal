@@ -9,6 +9,7 @@ import { uat } from './commands/uat.ts'
 import { ubt } from './commands/ubt.ts'
 import { pkg } from './commands/pkg.ts'
 import { buildgraph } from './commands/buildgraph/index.ts'
+import { workflow } from './commands/workflow/index.ts'
 import { mergeConfig, searchForConfigFile } from './lib/config.ts'
 
 export type GlobalOptions = typeof cmd extends
@@ -20,7 +21,7 @@ if (searchForConfigFile()) {
 	mergeConfig(searchForConfigFile()!)
 }
 
-const cmd = new Command()
+export const cmd = new Command()
 	.option('-v, --verbose', 'Verbose')
 	.globalOption('-c, --config-path <configPath:string>', 'Path to config file', {
 		action: ({ configPath }) => {
@@ -48,4 +49,5 @@ await cmd
 	.command('ubt', ubt)
 	.command('pkg', pkg)
 	.command('buildgraph', buildgraph)
+	.command('workflow', workflow)
 	.parse(Deno.args)

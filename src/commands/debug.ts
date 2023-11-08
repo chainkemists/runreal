@@ -14,9 +14,7 @@ export const debug = new Command<GlobalOptions>()
 		const { dryRun, quiet } = options as DebugOptions
 		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
 
-		console.log(cfg)
-		console.log('dryrun:', dryRun)
-		console.log('quiet:', quiet)
+		console.log('[config]', cfg)
 
 		await Promise.resolve()
 	})

@@ -64,6 +64,6 @@ export const install = new Command()
 			dryRun,
 		})
 		if (setup) {
-			await runEngineSetup(clonedPath, cfg.git.dependenciesCachePath)
+			await runEngineSetup({ enginePath: clonedPath, gitDependsCache: cfg.git.dependenciesCachePath, dryRun })
 		}
 	})
