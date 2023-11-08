@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/chainkemists/runreal/compare/v1.1.0...v1.1.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* error handling in searchForConfigFile ([6af184f](https://github.com/chainkemists/runreal/commit/6af184f260bf93bb8470ce32d8397d1c4a6cd9c4))
+
 ## [1.1.0](https://github.com/chainkemists/runreal/compare/v1.0.0...v1.1.0) (2023-11-08)
 
 
