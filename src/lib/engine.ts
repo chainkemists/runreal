@@ -130,7 +130,7 @@ export abstract class Engine {
 
 	async runUAT(args: string[] = []) {
 		const runUATScript = this.getRunUATScript()
-		await exec(runUATScript, args)
+		return await exec(runUATScript, args)
 	}
 
 	async runUBT({
@@ -150,12 +150,12 @@ export abstract class Engine {
 		const args = [target, configuration, platform, ...extraArgs]
 		console.log('[runUBT]', args)
 		if (dryRun) return
-		await exec(buildScript, args)
+		return await exec(buildScript, args)
 	}
 
 	async ubt(args: string[] = [], options = { quiet: false }) {
 		const buildScript = this.getBuildScript()
-		await exec(buildScript, args, options)
+		return await exec(buildScript, args, options)
 	}
 
 	// TODO(xenon): cache this when we first run init
@@ -201,7 +201,7 @@ export abstract class Engine {
 		const cleanScript = this.getCleanScript()
 		const args = [target, configuration, platform, ...extraArgs]
 		console.log('[runClean]', args)
-		await exec(cleanScript, args)
+		return await exec(cleanScript, args)
 	}
 
 	async runBuildGraph(buildGraphScript: string, args: string[] = []) {
@@ -218,7 +218,7 @@ export abstract class Engine {
 			`-Script=${bgScriptPath}`,
 			...args,
 		]
-		await this.runUAT(uatArgs)
+		return await this.runUAT(uatArgs)
 	}
 }
 

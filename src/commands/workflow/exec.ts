@@ -50,7 +50,8 @@ async function executeCommand(step: { command: string; args: string[] }) {
 			console.log('skipping execution...')
 		}
 	} catch (e) {
-		console.log(`[error] failed to exec runreal ${baseCmd} => ${e.message}`)
+		console.log(`[error] failed to exec :runreal ${baseCmd.join(' ')}: => ${e.message}`)
+		throw e
 	}
 }
 
@@ -101,8 +102,8 @@ export const exec = new Command<GlobalOptions>()
 		cmd.noExit()
 
 		if (mode === Mode.Local) {
-			await localExecutor(steps)
+			await localExecutor(steps).catch((e) => Deno.exit(1))
 		} else if (mode === Mode.Buildkite) {
-			await buildkiteExecutor(steps)
+			await buildkiteExecutor(steps).catch((e) => Deno.exit(1))
 		}
 	})
