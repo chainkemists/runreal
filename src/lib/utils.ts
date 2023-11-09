@@ -290,3 +290,34 @@ export const copyBuildGraphScripts = async (enginePath: string, bgScriptPath: st
 	}
 	return path.join(engineBg, path.basename(bgScriptPath))
 }
+
+export const randomBuildkiteEmoji = () => {
+	const emojis =	[
+		':mr-bones:',
+		':heart_on_fire:',
+		':skull_and_crossbones:',
+		':partying_face:',
+		':face_with_cowboy_hat:',
+		':sunglasses:',
+		':boom:',
+		':imp:',
+		':space_invader:',
+		':alien:',
+		':ghost:',
+		':japanese_goblin:',
+		':japanese_ogre:',
+		':space_invader:',
+		':skier:',
+		':anatomical_heart:',
+		':brain:',
+		':genie:',
+		':fairy:',
+		':mage:',
+		':astronaut:',
+		':ninja:',
+		':bone:',
+		':shamrock:',
+		':beetle:'
+	]
+	return emojis[Math.floor(Math.random() * emojis.length)]
+}

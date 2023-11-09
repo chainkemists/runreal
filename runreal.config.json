@@ -20,12 +20,21 @@
 	},
 	"workflows": [
 		{ 
-			"name": "Compile Client", 
+			"name": "Compile Client",
 			"steps": [
 				"runreal debug",
-				"runreal engine update -d",
+				"runreal engine update --setup -d",
 				"runreal build Editor -d",
 				"runreal build Client -d"
+			]
+		},
+		{ 
+			"name": "Compile Server",
+			"steps": [
+				"runreal debug",
+				"runreal engine update --setup",
+				"runreal build Editor",
+				"runreal build Server"
 			]
 		}
 	]

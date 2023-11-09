@@ -2,6 +2,7 @@ import { Command, EnumType, ValidationError } from '/deps.ts'
 import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
 import { cmd, GlobalOptions } from '/index.ts'
 import { CliOptions } from '/lib/types.ts'
+import { randomBuildkiteEmoji } from '/lib/utils.ts'
 
 export type ExecOptions = typeof exec extends Command<any, any, infer Options, any, any> ? Options
 	: never
@@ -34,6 +35,32 @@ enum Mode {
 	Buildkite = 'buildkite',
 }
 
+async function localExecutor(commands: string[]) {
+	for await (const command of commands) {
+		const isRunrealCommand = command.startsWith('runreal')
+		if (isRunrealCommand) {
+			console.log('[workflow] exec =>', command)
+			await cmd.parse(command.split(' ').slice(1))
+		} else {
+			// TODO(xenon): Run utils.exec here
+			console.log('skipping execution...')
+		}
+	}
+}
+
+async function buildkiteExecutor(commands: string[]) {
+	for await (const command of commands) {
+		const isRunrealCommand = command.startsWith('runreal')
+		if (isRunrealCommand) {
+			console.log(`--- ${randomBuildkiteEmoji()} ${command}`)
+			await cmd.parse(command.split(' ').slice(1))
+		} else {
+			// TODO(xenon): Run utils.exec here
+			console.log('skipping execution...')
+		}
+	}
+}
+
 export const exec = new Command<GlobalOptions>()
 	.option('-d, --dry-run', 'Dry run')
 	.type('mode', new EnumType(Mode))
@@ -62,20 +89,11 @@ export const exec = new Command<GlobalOptions>()
 			return
 		}
 
-		for await (const command of commands) {
-			if (mode === Mode.Local) {
-				// Stop cliffy for exiting the process after running single command
-				cmd.noExit()
-				const isRunrealCommand = command.startsWith('runreal')
-				if (isRunrealCommand) {
-					console.log('[workflow] exec =>', command)
-					await cmd.parse(command.split(' ').slice(1))
-				} else {
-					// TODO(xenon): Run utils.exec here
-					console.log('skipping execution...')
-				}
-			} else if (mode === Mode.Buildkite) {
-				throw new ValidationError(`Buildkite mode not implemented`)
-			}
+		// Stop cliffy for exiting the process after running single command
+		cmd.noExit()
+		if (mode === Mode.Local) {
+			await localExecutor(commands)
+		} else if (mode === Mode.Buildkite) {
+			await buildkiteExecutor(commands)
 		}
 	})
