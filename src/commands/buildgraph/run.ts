@@ -20,7 +20,7 @@ async function getAutomationToolLogs(enginePath: string) {
 	const logJson = path.join(enginePath, 'Engine', 'Programs', 'AutomationTool', 'Saved', 'Logs', 'Log.json')
 	let logs: AutomationToolLogs[] = []
 	try {
-		logs = await readNdjson(logJson)
+		logs = await readNdjson(logJson) as unknown as AutomationToolLogs[]
 	} catch (e) {
 		// pass	
 	}
