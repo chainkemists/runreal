@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/chainkemists/runreal/compare/v1.2.0...v1.3.0) (2023-11-09)
+
+
+### Features
+
+* updated workflow executor ([f535881](https://github.com/chainkemists/runreal/commit/f535881f2e92b2e572c26365a246e789d541964f))
+
 ## [1.2.0](https://github.com/chainkemists/runreal/compare/v1.1.1...v1.2.0) (2023-11-09)
 
 
