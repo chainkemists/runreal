@@ -7,7 +7,6 @@ import { randomBuildkiteEmoji } from '/lib/utils.ts'
 export type ExecOptions = typeof exec extends Command<any, any, infer Options, any, any> ? Options
 	: never
 
-
 // Object containing the allowed substitutions
 const getSubstitutions = (cfg: RunrealConfig) => ({
 	'engine.path': cfg.engine.path,
@@ -28,9 +27,11 @@ function sanitizeInput(value: string) {
 function interpolateCommand(input: string[], substitutions: Record<string, string>) {
 	// This regular expression matches all occurrences of ${placeholder}
 	const placeholderRegex = /\$\{([^}]+)\}/g
-	return input.map(arg => arg.replace(placeholderRegex, (_, key) => {
-		return key in substitutions ? sanitizeInput(substitutions[key]) : _
-	}))
+	return input.map((arg) =>
+		arg.replace(placeholderRegex, (_, key) => {
+			return key in substitutions ? sanitizeInput(substitutions[key]) : _
+		})
+	)
 }
 
 enum Mode {
@@ -38,7 +39,7 @@ enum Mode {
 	Buildkite = 'buildkite',
 }
 
-async function executeCommand(step: { command: string, args: string[] }) {
+async function executeCommand(step: { command: string; args: string[] }) {
 	const isRunrealCmd = step.command.startsWith('runreal')
 	const baseCmd = step.command.split(' ').slice(1)
 	try {
@@ -53,14 +54,14 @@ async function executeCommand(step: { command: string, args: string[] }) {
 	}
 }
 
-async function localExecutor(steps: { command: string, args: string[] }[]) {
+async function localExecutor(steps: { command: string; args: string[] }[]) {
 	for await (const step of steps) {
 		console.log(`[workflow] exec => ${step.command} ${step.args.join(' ')}`)
 		await executeCommand(step)
 	}
 }
 
-async function buildkiteExecutor(steps: { command: string, args: string[] }[]) {
+async function buildkiteExecutor(steps: { command: string; args: string[] }[]) {
 	for await (const step of steps) {
 		console.log(`--- ${randomBuildkiteEmoji()} ${step.command} ${step.args.join(' ')}`)
 		await executeCommand(step)
@@ -82,7 +83,7 @@ export const exec = new Command<GlobalOptions>()
 			throw new ValidationError(`Workflow ${workflow} not found`)
 		}
 
-		const steps  = []
+		const steps = []
 		for await (const step of run.steps) {
 			const command = interpolateCommand([step.command], getSubstitutions(cfg))[0]
 			const args = interpolateCommand(step.args || [], getSubstitutions(cfg))
@@ -98,7 +99,7 @@ export const exec = new Command<GlobalOptions>()
 
 		// Stop cliffy for exiting the process after running single command
 		cmd.noExit()
-			
+
 		if (mode === Mode.Local) {
 			await localExecutor(steps)
 		} else if (mode === Mode.Buildkite) {

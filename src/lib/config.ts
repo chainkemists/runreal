@@ -10,7 +10,7 @@ export let config: Partial<RunrealConfig> = {
 		path: '',
 	},
 	build: {
-		path: ''
+		path: '',
 	},
 }
 
