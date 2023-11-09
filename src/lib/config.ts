@@ -1,4 +1,4 @@
-import { deepmerge, path } from '/deps.ts'
+import { deepmerge, path, ValidationError } from '/deps.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
 
 export let config: Partial<RunrealConfig> = {
@@ -71,34 +71,14 @@ export function mergeWithCliOptions(cliOptions: CliOptions): Partial<RunrealConf
 	return config
 }
 
-/*
-export function mergeWithCliOptions(cliOptions: CliOptions): Partial<RunrealConfig> {
-	const picked: Partial<RunrealConfig> = {}
-
-	if (cliOptions['enginePath']) {
-		picked.engine = { path: cliOptions['enginePath'] }
-	}
-
-	if (cliOptions['projectPath']) {
-		picked.project = { path: cliOptions['projectPath'] }
-	}
-
-	config = deepmerge(config, picked)
-	return config
-}
-*/
-
-// TODO(xenon): Use cliffy validation instead?
 export function validateConfig(config: Partial<RunrealConfig>): RunrealConfig {
 	if (!config.engine || !config.engine.path) {
-		throw new Error('Invalid config: Missing engine path')
+		throw new ValidationError('Invalid config: Missing engine path')
 	}
 
 	if (!config.project || !config.project.path) {
-		throw new Error('Invalid config: Missing project path')
+		throw new ValidationError('Invalid config: Missing project path')
 	}
-
-	// Add more validation rules as needed...
 
 	return config as RunrealConfig
 }

@@ -7,7 +7,6 @@ import { createEngine } from '/lib/engine.ts'
 export type RunOptions = typeof run extends Command<any, any, infer Options, any, any> ? Options
 	: never
 
-
 interface AutomationToolLogs {
 	time: string
 	level: string
@@ -22,7 +21,7 @@ async function getAutomationToolLogs(enginePath: string) {
 	try {
 		logs = await readNdjson(logJson) as unknown as AutomationToolLogs[]
 	} catch (e) {
-		// pass	
+		// pass
 	}
 	return logs
 }

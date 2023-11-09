@@ -2,7 +2,7 @@ import { Command, EnumType, ValidationError } from '/deps.ts'
 import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
 import { cmd, GlobalOptions } from '/index.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
-import { randomBuildkiteEmoji } from '/lib/utils.ts'
+import { exec as execCmd, randomBuildkiteEmoji } from '/lib/utils.ts'
 
 export type ExecOptions = typeof exec extends Command<any, any, infer Options, any, any> ? Options
 	: never
@@ -41,16 +41,16 @@ enum Mode {
 
 async function executeCommand(step: { command: string; args: string[] }) {
 	const isRunrealCmd = step.command.startsWith('runreal')
-	const baseCmd = step.command.split(' ').slice(1)
 	try {
 		if (isRunrealCmd) {
+			const baseCmd = step.command.split(' ').slice(1)
 			await cmd.parse([...baseCmd, ...step.args])
 		} else {
-			// TODO(xenon): Run utils.exec here
-			console.log('skipping execution...')
+			const baseCmd = step.command.split(' ').shift() || ''
+			await execCmd(baseCmd, [...step.command.split(' ').slice(1), ...step.args])
 		}
 	} catch (e) {
-		console.log(`[error] failed to exec :runreal ${baseCmd.join(' ')}: => ${e.message}`)
+		console.log(`[error] failed to exec :runreal ${step.command} ${step.args.join(' ')}: => ${e.message}`)
 		throw e
 	}
 }

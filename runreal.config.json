@@ -23,7 +23,8 @@
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--setup"] },
-        { "command": "runreal buildgraph run",
+        {
+          "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
             "-set:ProjectName=${project.name}",
@@ -39,7 +40,8 @@
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--setup"] },
-        { "command": "runreal buildgraph run",
+        {
+          "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
             "-set:ProjectName=${project.name}",
@@ -50,12 +52,13 @@
         }
       ]
     },
-	{
+    {
       "name": "Cook All",
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--setup"] },
-        { "command": "runreal buildgraph run",
+        {
+          "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
             "-set:ProjectName=${project.name}",
@@ -66,40 +69,51 @@
         }
       ]
     },
- 	{
+    {
       "name": "Package Client",
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--setup"] },
-        { "command": "runreal buildgraph run",
+        {
+          "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
-        	"-set:ClientTargetName=${project.name}Game",
+            "-set:ClientTargetName=${project.name}Game",
             "-set:ServerTargetName=${project.name}Server",
             "-Target=Package Clients"
           ]
         }
       ]
     },
-	{
+    {
       "name": "Package Server",
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--setup"] },
-        { "command": "runreal buildgraph run",
+        {
+          "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
-        	"-set:ClientTargetName=${project.name}Game",
+            "-set:ClientTargetName=${project.name}Game",
             "-set:ServerTargetName=${project.name}Server",
             "-Target=Package Server"
           ]
         }
+      ]
+    },
+    {
+      "name": "Debug",
+      "steps": [
+        { "command": "runreal debug" },
+        { "command": "runreal engine update", "args": ["--dry-run"] },
+		{ "command": "runreal build Editor", "args": ["--dry-run"] },
+        { "command": "aws configure list" }
       ]
     }
   ]
