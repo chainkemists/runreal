@@ -19,12 +19,12 @@ export type CliOptions = Partial<
 
 export interface EngineConfig {
 	path: string
-	binaryCachePath?: string
-	binaryOutputPath?: string
 	branch?: string
+	cachePath?: string
 }
 
 export interface ProjectConfig {
+	name: string
 	path: string
 }
 
@@ -35,16 +35,14 @@ export interface GitConfig {
 }
 
 export interface BuildConfig {
-	foo?: string
-	blah?: string
-	arr?: number[]
+	path: string
 }
 
 export interface RunrealConfig {
 	engine: EngineConfig
 	project: ProjectConfig
 	git: GitConfig
-	build?: BuildConfig
+	build: BuildConfig
 }
 
 export interface UeDepsManifestData {

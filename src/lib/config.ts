@@ -6,12 +6,11 @@ export let config: Partial<RunrealConfig> = {
 		path: '',
 	},
 	project: {
+		name: '',
 		path: '',
 	},
 	build: {
-		foo: 'bar',
-		blah: 'hah',
-		arr: [1, 2, 3],
+		path: ''
 	},
 }
 
@@ -46,9 +45,10 @@ export function mergeConfig(configPath: string): Partial<RunrealConfig> {
 
 const cliOptionToConfigMap = {
 	'enginePath': 'engine.path',
-	'projectPath': 'project.path',
 	'branch': 'engine.branch',
-	'cachePath': 'engine.binaryCachePath',
+	'cachePath': 'engine.cachePath',
+	'projectPath': 'project.path',
+	'buildPath': 'build.path',
 	'gitDependenciesCachePath': 'git.dependenciesCachePath',
 	'gitMirrors': 'git.mirrors',
 	'gitMirrorsPath': 'git.mirrorsPath',

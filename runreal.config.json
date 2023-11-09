@@ -1,41 +1,106 @@
 {
-	"engine": {
-		"source": "https://github.com/Chainkemists/UnrealEngine-Internal",
-		"path": "E:\\RX\\UnrealEngine",
-		"branch": "main",
-		"binaryCachePath": "E:\\RX\\.cache",
-		"binaryOutputPath": "E:\\RX\\.dist"
-	},
-	"project": {
-		"path": "E:\\RX\\Obsidian"
-	},
-	"git": {
-		"dependenciesCachePath": "E:\\RX\\.gitdepscache",
-		"mirrors": true,
-		"mirrorsPath": "E:\\RX\\.mirrors"
-	},
-	"build": {
-		"foo": "xxx",
-		"arr": [4,5,6]
-	},
-	"workflows": [
-		{ 
-			"name": "Compile Client",
-			"steps": [
-				"runreal debug",
-				"runreal engine update --setup -d",
-				"runreal build Editor -d",
-				"runreal build Client -d"
-			]
-		},
-		{ 
-			"name": "Compile Server",
-			"steps": [
-				"runreal debug",
-				"runreal engine update --setup",
-				"runreal build Editor",
-				"runreal build Server"
-			]
-		}
-	]
+  "project": {
+    "name": "Obsidian",
+    "path": "E:\\RX\\Obsidian"
+  },
+  "engine": {
+    "source": "https://github.com/Chainkemists/UnrealEngine-Internal",
+    "path": "E:\\RX\\UnrealEngine",
+    "branch": "main",
+    "cachePath": "E:\\RX\\.cache"
+  },
+  "git": {
+    "dependenciesCachePath": "E:\\RX\\.gitdepscache",
+    "mirrors": true,
+    "mirrorsPath": "E:\\RX\\.mirrors"
+  },
+  "build": {
+    "path": "E:\\RX\\.dist"
+  },
+  "workflows": [
+    {
+      "name": "Compile Client",
+      "steps": [
+        { "command": "runreal debug" },
+        { "command": "runreal engine update", "args": ["--setup"] },
+        { "command": "runreal buildgraph run",
+          "args": [
+            "${project.path}\\BuildGraph\\Build.xml",
+            "-set:ProjectName=${project.name}",
+            "-set:ProjectPath=${project.path}",
+            "-set:OutputPath=${build.path}",
+            "-Target=Build Clients"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Compile Server",
+      "steps": [
+        { "command": "runreal debug ${project.name}" },
+        { "command": "runreal engine update", "args": ["--setup"] },
+        { "command": "runreal buildgraph run",
+          "args": [
+            "${project.path}\\BuildGraph\\Build.xml",
+            "-set:ProjectName=${project.name}",
+            "-set:ProjectPath=${project.path}",
+            "-set:OutputPath=${build.path}",
+            "-Target=Build Servers"
+          ]
+        }
+      ]
+    },
+	{
+      "name": "Cook All",
+      "steps": [
+        { "command": "runreal debug ${project.name}" },
+        { "command": "runreal engine update", "args": ["--setup"] },
+        { "command": "runreal buildgraph run",
+          "args": [
+            "${project.path}\\BuildGraph\\Build.xml",
+            "-set:ProjectName=${project.name}",
+            "-set:ProjectPath=${project.path}",
+            "-set:OutputPath=${build.path}",
+            "-Target=Cook All"
+          ]
+        }
+      ]
+    },
+ 	{
+      "name": "Package Client",
+      "steps": [
+        { "command": "runreal debug ${project.name}" },
+        { "command": "runreal engine update", "args": ["--setup"] },
+        { "command": "runreal buildgraph run",
+          "args": [
+            "${project.path}\\BuildGraph\\Build.xml",
+            "-set:ProjectName=${project.name}",
+            "-set:ProjectPath=${project.path}",
+            "-set:OutputPath=${build.path}",
+        	"-set:ClientTargetName=${project.name}Game",
+            "-set:ServerTargetName=${project.path}Server",
+            "-Target=Package Clients"
+          ]
+        }
+      ]
+    },
+	{
+      "name": "Package Server",
+      "steps": [
+        { "command": "runreal debug ${project.name}" },
+        { "command": "runreal engine update", "args": ["--setup"] },
+        { "command": "runreal buildgraph run",
+          "args": [
+            "${project.path}\\BuildGraph\\Build.xml",
+            "-set:ProjectName=${project.name}",
+            "-set:ProjectPath=${project.path}",
+            "-set:OutputPath=${build.path}",
+        	"-set:ClientTargetName=${project.name}Game",
+            "-set:ServerTargetName=${project.path}Server",
+            "-Target=Package Server"
+          ]
+        }
+      ]
+    }
+  ]
 }
