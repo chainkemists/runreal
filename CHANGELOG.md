@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/chainkemists/runreal/compare/v1.3.0...v1.4.0) (2023-11-09)
+
+
+### Features
+
+* workflow execs non runreal commands ([e0eab40](https://github.com/chainkemists/runreal/commit/e0eab401b59419ada2a6d7cf0082248ad64cae18))
+
+
+### Bug Fixes
+
+* error handling in ([795a97f](https://github.com/chainkemists/runreal/commit/795a97f7481e8c21347262a9ca06c7e737373b21))
+* getAutomationToolLogs typing ([f7c1cf5](https://github.com/chainkemists/runreal/commit/f7c1cf5f4bc16cb743c3feb0fd6ab6e7b3264999))
+
 ## [1.3.0](https://github.com/chainkemists/runreal/compare/v1.2.0...v1.3.0) (2023-11-09)
 
 
