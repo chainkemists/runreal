@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/chainkemists/runreal/compare/v1.1.1...v1.2.0) (2023-11-09)
+
+
+### Features
+
+* test buildkiteExecutor and test workflows ([c3ee40a](https://github.com/chainkemists/runreal/commit/c3ee40aeeae151fe3834eff3085059635a6e6abc))
+* workflow experiment and update engine setup ([af4a5d2](https://github.com/chainkemists/runreal/commit/af4a5d296cfc4d5398882c3ae69d9f38da7b7b14))
+
 ## [1.1.1](https://github.com/chainkemists/runreal/compare/v1.1.0...v1.1.1) (2023-11-08)
 
 
