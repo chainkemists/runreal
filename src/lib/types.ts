@@ -35,7 +35,19 @@ export interface GitConfig {
 }
 
 export interface BuildConfig {
+	id: string
 	path: string
+	branch: string
+	branchSafe: string
+	commit: string
+	commitShort: string
+}
+
+export interface BuildkiteMetadata {
+	branch: string
+	buildNumber: string
+	buildCheckoutPath: string
+	buildPipelineSlug: string
 }
 
 export interface RunrealConfig {
@@ -43,6 +55,7 @@ export interface RunrealConfig {
 	project: ProjectConfig
 	git: GitConfig
 	build: BuildConfig
+	buildkite: BuildkiteMetadata
 }
 
 export interface UeDepsManifestData {

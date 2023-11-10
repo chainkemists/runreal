@@ -19,7 +19,6 @@
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -37,7 +36,6 @@
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -55,7 +53,6 @@
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -68,12 +65,11 @@
       "name": "Package Client",
       "steps": [
         { "command": "runreal debug" },
-        { "command": "runreal engine update", "args": ["--setup"] },
         {
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}-${buildkite.buildNumber}",
+			"-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -82,15 +78,7 @@
             "-Target=Package Clients"
           ]
         },
-        {
-          "command": "aws s3 cp",
-          "args": [
-            "${build.path}\\${project.name}Game-Win64-Development-${build.id}-${buildkite.buildNumber}.zip",
-            "s3://cdkteststack-testbuckete6e05abe-x085axlnugrj/${project.name}Game-Win64-Development-${build.id}-${buildkite.buildNumber}.zip",
-            "--endpoint-url",
-            "https://s3-accelerate.amazonaws.com"
-          ]
-        }
+		{ "command": "ls", "args": ["${build.path}\\${project.name}Game-${build.id}-Win64-Development.zip"] }
       ]
     },
     {
@@ -102,24 +90,23 @@
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}-${buildkite.buildNumber}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
             "-set:ClientTargetName=${project.name}Game",
             "-set:ServerTargetName=${project.name}Server",
-            "-Target=Package Servers"
-          ]
-        },
-        {
-          "command": "aws s3 cp",
-          "args": [
-            "${build.path}\\${project.name}Server-Win64-Development-${build.id}-${buildkite.buildNumber}.zip",
-            "s3://cdkteststack-testbuckete6e05abe-x085axlnugrj/${project.name}Server-Win64-Development-${build.id}-${buildkite.buildNumber}.zip",
-            "--endpoint-url",
-            "https://s3-accelerate.amazonaws.com"
+            "-Target=Package Server"
           ]
         }
+      ]
+    },
+    {
+      "name": "Debug",
+      "steps": [
+        { "command": "runreal debug" },
+        { "command": "runreal engine update", "args": ["--dry-run"] },
+		{ "command": "runreal build Editor", "args": ["--dry-run"] },
+        { "command": "aws configure list" }
       ]
     }
   ]

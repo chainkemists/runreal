@@ -2,7 +2,7 @@ import { Command, EnumType, ValidationError } from '/deps.ts'
 import { createEngine, Engine, EngineConfiguration, EnginePlatform, EngineTarget } from '/lib/engine.ts'
 import { GlobalOptions } from '/index.ts'
 import { findProjectFile } from '/lib/utils.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { CliOptions } from '/lib/types.ts'
 
 const defaultBCRArgs = [
@@ -59,9 +59,7 @@ export const pkg = new Command<GlobalOptions>()
 	.option('--profile <profile:string>', 'Build profile', { default: 'client', required: true })
 	.action(async (options) => {
 		const { platform, configuration, dryRun, profile, archiveDirectory, zip } = options as PkgOptions
-		const { engine: { path: enginePath }, project: { path: projectPath } } = validateConfig(
-			mergeWithCliOptions(options as CliOptions),
-		)
+		const { engine: { path: enginePath }, project: { path: projectPath } } = config.get(options as CliOptions)
 
 		const literal = pkg.getLiteralArgs().map((arg) => arg.toLowerCase())
 		const profileArgs = profiles[profile as keyof typeof profiles] || []

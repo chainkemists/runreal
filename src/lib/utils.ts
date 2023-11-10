@@ -11,7 +11,7 @@ export async function exec(
 
 	if (dryRun) {
 		console.log(`[${cmd}] ${args.join(' ')}`)
-		return { success: true, code: 0, signal: null }
+		return { success: true, code: 0, signal: null, output: '' }
 	}
 
 	const command = new Deno.Command(cmd, {
@@ -46,7 +46,7 @@ export function execSync(
 
 	if (dryRun) {
 		console.log(`[${cmd}] ${args.join(' ')}`)
-		return { success: true, code: 0, signal: null }
+		return { success: true, code: 0, signal: null, output: '' }
 	}
 
 	const command = new Deno.Command(cmd, {
@@ -358,4 +358,4 @@ export class DefaultMap<K, V> extends Map<K, V> {
 	}
 }
 
-export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max)

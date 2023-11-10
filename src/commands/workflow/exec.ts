@@ -1,5 +1,5 @@
 import { Command, EnumType, ValidationError } from '/deps.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { cmd, GlobalOptions } from '/index.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
 import { exec as execCmd, randomBuildkiteEmoji } from '/lib/utils.ts'
@@ -12,7 +12,11 @@ const getSubstitutions = (cfg: RunrealConfig) => ({
 	'engine.path': cfg.engine.path,
 	'project.path': cfg.project.path,
 	'project.name': cfg.project.name,
+	'build.id': cfg.build.id,
 	'build.path': cfg.build.path,
+	'build.branch': cfg.build.branchSafe,
+	'build.commit': cfg.build.commitShort,
+	'buildkite.buildNumber': cfg.buildkite.buildNumber,
 })
 
 // Sanitize the input values to prevent command injection
@@ -29,7 +33,7 @@ function interpolateCommand(input: string[], substitutions: Record<string, strin
 	const placeholderRegex = /\$\{([^}]+)\}/g
 	return input.map((arg) =>
 		arg.replace(placeholderRegex, (_, key) => {
-			return key in substitutions ? sanitizeInput(substitutions[key]) : _
+			return key in substitutions ? substitutions[key] : _
 		})
 	)
 }
@@ -77,7 +81,7 @@ export const exec = new Command<GlobalOptions>()
 	.arguments('<workflow>')
 	.action(async (options, workflow) => {
 		const { dryRun, mode } = options as ExecOptions
-		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions)) as any
+		const cfg = config.get(options as CliOptions) as any
 
 		const run = cfg.workflows.find((w: any) => w.name === workflow)
 		if (!run) {
