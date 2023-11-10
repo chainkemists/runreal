@@ -104,7 +104,9 @@ export const debug = new Command<GlobalOptions>()
 		const cfg = config.get(options as CliOptions)
 
 		console.log(cfg)
-		return Promise.resolve(cfg)
+		await Promise.resolve(cfg)
+
+		/*
 		// initialize the command
 		const kv = await openKv()
 		const { commandId } = await init(kv, debug.getName(), sessionId)
@@ -126,4 +128,5 @@ export const debug = new Command<GlobalOptions>()
 		}
 
 		return await Promise.resolve(output)
+		*/
 	})
