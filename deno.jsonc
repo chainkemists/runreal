@@ -6,6 +6,7 @@
 	},
 	"tasks": {
 		"start": "deno run -A --watch=src src/index.ts",
+		"run": "deno run -A --unstable src/index.ts",
 		"engine-install": "deno run -A src/index.ts engine install --branch main",
 		"engine-update": "deno run -A src/index.ts engine update --branch main --setup",
 		"engine-clean": "deno run -A src/index.ts engine update -c -b main -r origin -s -g E:\\RX\\.gitdepscache",
