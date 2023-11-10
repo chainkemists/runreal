@@ -1,21 +1,21 @@
 {
   "project": {
     "name": "Obsidian",
-    "path": "E:\\RX\\Obsidian"
+    "path": "../Obsidian"
   },
   "engine": {
     "source": "https://github.com/Chainkemists/UnrealEngine-Internal",
-    "path": "E:\\RX\\UnrealEngine",
+    "path": "../UnrealEngine",
     "branch": "main",
-    "cachePath": "E:\\RX\\.cache"
+    "cachePath": "../.cache"
   },
   "git": {
-    "dependenciesCachePath": "E:\\RX\\.gitdepscache",
+    "dependenciesCachePath": "../.gitdepscache",
     "mirrors": true,
-    "mirrorsPath": "E:\\RX\\.mirrors"
+    "mirrorsPath": "../.mirrors"
   },
   "build": {
-    "path": "E:\\RX\\.dist"
+    "path": "../.dist"
   },
   "workflows": [
     {

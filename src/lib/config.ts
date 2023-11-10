@@ -71,7 +71,37 @@ export function mergeWithCliOptions(cliOptions: CliOptions): Partial<RunrealConf
 	return config
 }
 
+export function resolvePaths(config: Partial<RunrealConfig>) {
+	if (config.engine && config.engine.path) {
+		config.engine.path = path.resolve(config.engine.path)
+	}
+
+	if (config.engine && config.engine.cachePath) {
+		config.engine.cachePath = path.resolve(config.engine.cachePath)
+	}
+
+	if (config.project && config.project.path) {
+		config.project.path = path.resolve(config.project.path)
+	}
+
+	if (config.build && config.build.path) {
+		config.build.path = path.resolve(config.build.path)
+	}
+
+	if (config.git && config.git.dependenciesCachePath) {
+		config.git.dependenciesCachePath = path.resolve(config.git.dependenciesCachePath)
+	}
+
+	if (config.git && config.git.mirrorsPath) {
+		config.git.mirrorsPath = path.resolve(config.git.mirrorsPath)
+	}
+
+	return config
+}
+
 export function validateConfig(config: Partial<RunrealConfig>): RunrealConfig {
+	config = resolvePaths(config)
+
 	if (!config.engine || !config.engine.path) {
 		throw new ValidationError('Invalid config: Missing engine path')
 	}
