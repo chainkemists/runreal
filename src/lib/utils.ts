@@ -100,10 +100,33 @@ export async function getHomeDir(): Promise<string> {
 	}
 }
 
+export function getHomeDirSync(): string {
+	// Check if the Deno permissions for environment access are granted
+	if (Deno.permissions.querySync({ name: 'env' })) {
+		// Determine the home directory based on the operating system
+		const homeDir = Deno.build.os === 'windows' ? Deno.env.get('USERPROFILE') : Deno.env.get('HOME')
+
+		if (homeDir) {
+			return homeDir
+		} else {
+			throw new Error('Could not determine the home directory.')
+		}
+	} else {
+		throw new Error('Permission denied: Cannot access environment variables.')
+	}
+}
+
 export async function createConfigDir(): Promise<string> {
 	const homeDir = await getHomeDir()
 	const configDir = `${homeDir}/.runreal`
 	await Deno.mkdir(configDir, { recursive: true })
+	return configDir
+}
+
+export function createConfigDirSync(): string {
+	const homeDir = getHomeDirSync()
+	const configDir = `${homeDir}/.runreal`
+	Deno.mkdirSync(configDir, { recursive: true })
 	return configDir
 }
 
@@ -321,3 +344,18 @@ export const randomBuildkiteEmoji = () => {
 	]
 	return emojis[Math.floor(Math.random() * emojis.length)]
 }
+
+export class DefaultMap<K, V> extends Map<K, V> {
+	constructor(private defaultFn: (key: K) => V, entries?: readonly (readonly [K, V])[] | null) {
+		super(entries)
+	}
+
+	get(key: K): V {
+		if (!super.has(key)) {
+			super.set(key, this.defaultFn(key))
+		}
+		return super.get(key)!
+	}
+}
+
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
