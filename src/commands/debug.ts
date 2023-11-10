@@ -102,7 +102,7 @@ export const debug = new Command<GlobalOptions>()
 	.action(async (options) => {
 		const { dryRun, quiet, sessionId } = options as DebugOptions & GlobalOptions
 		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
-		
+
 		// initialize the command
 		const kv = await openKv()
 		const { commandId } = await init(kv, debug.getName(), sessionId)

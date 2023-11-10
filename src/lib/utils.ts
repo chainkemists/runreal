@@ -358,4 +358,4 @@ export class DefaultMap<K, V> extends Map<K, V> {
 	}
 }
 
-export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max)
