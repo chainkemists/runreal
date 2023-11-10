@@ -1,5 +1,5 @@
 import { Command, EnumType, ValidationError } from '/deps.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { cmd, GlobalOptions } from '/index.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
 import { exec as execCmd, randomBuildkiteEmoji } from '/lib/utils.ts'
@@ -81,7 +81,7 @@ export const exec = new Command<GlobalOptions>()
 	.arguments('<workflow>')
 	.action(async (options, workflow) => {
 		const { dryRun, mode } = options as ExecOptions
-		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions)) as any
+		const cfg = config.get(options as CliOptions) as any
 
 		const run = cfg.workflows.find((w: any) => w.name === workflow)
 		if (!run) {

@@ -10,17 +10,12 @@ import { ubt } from './commands/ubt.ts'
 import { pkg } from './commands/pkg.ts'
 import { buildgraph } from './commands/buildgraph/index.ts'
 import { workflow } from './commands/workflow/index.ts'
-import { mergeConfig, searchForConfigFile } from './lib/config.ts'
+import { config } from './lib/config.ts'
 import { logger, LogLevel } from './lib/logger.ts'
 
 export type GlobalOptions = typeof cmd extends
 	Command<void, void, void, [], infer Options extends Record<string, unknown>> ? Options
 	: never
-
-// Check Deno.cwd() for runreal.config.json
-if (searchForConfigFile()) {
-	mergeConfig(searchForConfigFile()!)
-}
 
 export const cmd = new Command()
 	.globalOption('--session-id <sessionId:string>', 'Session Id', {
@@ -33,12 +28,16 @@ export const cmd = new Command()
 		action: ({ logLevel }) => logger.setLogLevel(logLevel),
 	})
 	.globalOption('-c, --config-path <configPath:string>', 'Path to config file', {
-		action: ({ configPath }) => {
-			if (configPath) { const cfg = mergeConfig(configPath) }
+		action: async ({ configPath }) => {
+			if (configPath) { const cfg = await config.mergeConfig(configPath) }
 		},
 	})
+	.globalEnv('RUNREAL_ENGINE_PATH=<enginePath:string>', 'Overide path to engine folder', { prefix: 'RUNREAL_' })
 	.globalOption('--engine-path <enginePath:string>', 'Path to engine folder')
+	.globalEnv('RUNREAL_PROJECT_PATH=<projectPath:string>', 'Overide path to project folder', { prefix: 'RUNREAL_' })
 	.globalOption('--project-path <projectPath:string>', 'Path to project folder')
+	.globalEnv('RUNREAL_BUILD_PATH=<buildPath:string>', 'Overide path to build output folder', { prefix: 'RUNREAL_' })
+	.globalOption('--build-path <buildPath:string>', 'Path to save build outputs')
 
 await cmd
 	.name('runreal')

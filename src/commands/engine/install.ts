@@ -1,7 +1,7 @@
 import { Command, ValidationError } from '/deps.ts'
 import { cloneRepo, runEngineSetup } from '/lib/utils.ts'
 import { CliOptions } from '/lib/types.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 
 export type InstallOptions = typeof install extends Command<any, any, infer Options, any, any> ? Options
 	: never
@@ -13,6 +13,11 @@ export const install = new Command()
 	.option('-d, --dry-run', 'dry run', { default: false })
 	.group('Post Clone Configuration')
 	.option('-s, --setup', 'installs git dependencies (ie Setup.bat)')
+	.env(
+		'RUNREAL_GIT_DEPENDENCIES_CACHE_PATH=<gitDependenciesCachePath:string>',
+		'Overide to git dependencies cache folder',
+		{ prefix: 'RUNREAL_' },
+	)
 	.option(
 		'-g, --git-dependencies-cache-path <gitDependenciesCachePath:file>',
 		'git dependencies cache folder',
@@ -23,6 +28,7 @@ export const install = new Command()
 	})
 	.group('Git Mirror Configuration')
 	.option('-m, --git-mirrors', 'use git mirrors', { default: false })
+	.env('RUNREAL_GIT_MIRRORS_PATH=<gitMirrorsPath:string>', 'Overide to git mirrors path', { prefix: 'RUNREAL_' })
 	.option('-p, --git-mirrors-path <gitMirrorsPath:file>', 'git mirrors path')
 	.arguments('[source:string] [destination:file]')
 	.action(async (
@@ -40,7 +46,7 @@ export const install = new Command()
 			// gitMirrors,
 			// gitMirrorsPath,
 		} = options as InstallOptions
-		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
+		const cfg = config.get(options as CliOptions)
 		try {
 			await Deno.mkdir(destination)
 		} catch (e) {

@@ -1,5 +1,5 @@
 import { Command } from '/deps.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { GlobalOptions } from '/index.ts'
 import { CliOptions } from '/lib/types.ts'
 import { runEngineSetup } from '/lib/utils.ts'
@@ -17,7 +17,7 @@ export const setup = new Command<GlobalOptions>()
 	)
 	.action(async (options, ...args) => {
 		const { gitdepends, gitdependscache } = options as SetupOptions
-		const { engine: { path: enginePath } } = validateConfig(mergeWithCliOptions(options as CliOptions))
+		const { engine: { path: enginePath } } = config.get(options as CliOptions)
 		if (gitdepends) {
 			await runEngineSetup({ enginePath, gitDependsCache: gitdependscache })
 		}

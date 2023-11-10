@@ -1,13 +1,21 @@
 {
   "project": {
-    "name": "Obsidian"
+    "name": "Obsidian",
+    "path": "E://RX//Obsidian"
   },
   "engine": {
     "source": "https://github.com/Chainkemists/UnrealEngine-Internal",
-    "branch": "main"
+    "path": "E://RX//UnrealEngine",
+    "branch": "main",
+    "cachePath": "E://RX//.cache"
   },
   "git": {
-    "mirrors": true
+    "dependenciesCachePath": "E://RX//.gitdepscache",
+    "mirrors": true,
+    "mirrorsPath": "E://RX//.mirrors"
+  },
+  "build": {
+    "path": "E://RX//.dist"
   },
   "workflows": [
     {
@@ -65,12 +73,11 @@
       "name": "Package Client",
       "steps": [
         { "command": "runreal debug" },
-        { "command": "runreal engine update", "args": ["--setup"] },
         {
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
-            "-set:BuildId=${build.id}",
+			"-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -79,12 +86,7 @@
             "-Target=Package Clients"
           ]
         },
-        {
-          "command": "ls",
-          "args": [
-            "${build.path}\\${project.name}Game-${build.id}-Win64-Development.zip"
-          ]
-        }
+		{ "command": "ls", "args": ["${build.path}\\${project.name}Game-${build.id}-Win64-Development.zip"] }
       ]
     },
     {
@@ -111,7 +113,7 @@
       "steps": [
         { "command": "runreal debug" },
         { "command": "runreal engine update", "args": ["--dry-run"] },
-        { "command": "runreal build Editor", "args": ["--dry-run"] },
+		{ "command": "runreal build Editor", "args": ["--dry-run"] },
         { "command": "aws configure list" }
       ]
     }

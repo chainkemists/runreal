@@ -3,7 +3,7 @@ import { Command, EnumType, ValidationError } from '/deps.ts'
 import { createEngine, Engine, EngineConfiguration, EnginePlatform, EngineTarget } from '/lib/engine.ts'
 import { findProjectFile, getProjectName } from '/lib/utils.ts'
 import { GlobalOptions } from '/index.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { CliOptions } from '/lib/types.ts'
 
 const TargetError = (target: string, targets: string[]) => {
@@ -26,9 +26,7 @@ export const build = new Command<GlobalOptions>()
 	.arguments('<target:string>')
 	.action(async (options, target = EngineTarget.Editor) => {
 		const { platform, configuration, dryRun } = options as BuildOptions
-		const { engine: { path: enginePath }, project: { path: projectPath } } = validateConfig(
-			mergeWithCliOptions(options as CliOptions),
-		)
+		const { engine: { path: enginePath }, project: { path: projectPath } } = config.get(options as CliOptions)
 
 		const engine = await createEngine(enginePath)
 		const validTargets = await engine.parseEngineTargets()

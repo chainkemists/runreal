@@ -1,5 +1,5 @@
 import { Command } from '/deps.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { GlobalOptions } from '/index.ts'
 import { CliOptions } from '/lib/types.ts'
 import { createEngine } from '/lib/engine.ts'
@@ -13,13 +13,10 @@ export const version = new Command<GlobalOptions>()
 	.action(
 		async (options, ..._args) => {
 			logger.setContext(version.getName())
-			const { engine: { path: enginePath } } = validateConfig(mergeWithCliOptions(options as CliOptions))
-			const engine = await createEngine(enginePath)
+			const cfg = config.get(options as CliOptions)
+			console.log(cfg)
+			const engine = await createEngine(cfg.engine.path)
 			const engineVersion = await engine.getEngineVersion('full')
-			logger.info(engineVersion)
-			logger.info(engineVersion)
-			logger.info(engineVersion)
-			logger.info(engineVersion)
 			logger.info(engineVersion)
 		},
 	)

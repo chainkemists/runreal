@@ -2,7 +2,7 @@ import { Command, path } from '/deps.ts'
 import { GlobalOptions } from '/index.ts'
 import { exec, execSync, getGitDepsList, getGitIgnoreList } from '/lib/utils.ts'
 import { CliOptions } from '/lib/types.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 
 export type CacheOptions = typeof cache extends Command<any, any, infer Options, any, any> ? Options
 	: never
@@ -19,7 +19,7 @@ export const cache = new Command<GlobalOptions>()
 	.action(
 		async (options, ..._args) => {
 			const { debug, cachePath, ignorePdb, zstd } = options as CacheOptions
-			const { engine: { path: enginePath } } = validateConfig(mergeWithCliOptions(options as CliOptions))
+			const { engine: { path: enginePath } } = config.get(options as CliOptions)
 
 			// initialize the cache dir
 			// TODO(xenon): add a flag to force overwrite

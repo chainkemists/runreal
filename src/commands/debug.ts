@@ -1,5 +1,5 @@
 import { Command, ulid } from '/deps.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { GlobalOptions } from '/index.ts'
 import { CliOptions } from '/lib/types.ts'
 import { logger } from '/lib/logger.ts'
@@ -101,8 +101,10 @@ export const debug = new Command<GlobalOptions>()
 	.description('run')
 	.action(async (options) => {
 		const { dryRun, quiet, sessionId } = options as DebugOptions & GlobalOptions
-		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
+		const cfg = config.get(options as CliOptions)
 
+		console.log(cfg)
+		return Promise.resolve(cfg)
 		// initialize the command
 		const kv = await openKv()
 		const { commandId } = await init(kv, debug.getName(), sessionId)

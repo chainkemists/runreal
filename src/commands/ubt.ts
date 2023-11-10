@@ -2,7 +2,7 @@ import { Command } from '/deps.ts'
 import { createEngine, EngineConfiguration, EnginePlatform, EngineTarget } from '../lib/engine.ts'
 import { GlobalOptions } from '../index.ts'
 import { findProjectFile } from '../lib/utils.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { CliOptions } from '/lib/types.ts'
 
 export type UbtOptions = typeof ubt extends Command<any, any, infer Options, any, any> ? Options
@@ -13,9 +13,7 @@ export const ubt = new Command<GlobalOptions>()
 	.arguments('<command> [args...]')
 	.stopEarly()
 	.action(async (options, command, ...args) => {
-		const { engine: { path: enginePath }, project: { path: projectPath } } = validateConfig(
-			mergeWithCliOptions(options as CliOptions),
-		)
+		const { engine: { path: enginePath }, project: { path: projectPath } } = config.get(options as CliOptions)
 		const engine = await createEngine(enginePath)
 		if (command !== 'run') {
 			args.unshift(command)

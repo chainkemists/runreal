@@ -1,6 +1,6 @@
 import { Command, path, ValidationError } from '/deps.ts'
 
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { GlobalOptions } from '/index.ts'
 import { CliOptions } from '/lib/types.ts'
 import { exec, execSync } from '/lib/utils.ts'
@@ -18,7 +18,7 @@ export const restore = new Command<GlobalOptions>()
 	.action(
 		async (options, ..._args) => {
 			const { debug, cachePath } = options as RestoreOptions
-			const { engine: { path: enginePath } } = validateConfig(mergeWithCliOptions(options as CliOptions))
+			const { engine: { path: enginePath } } = config.get(options as CliOptions)
 
 			const gitRevision = await execSync('git', ['rev-parse', 'HEAD'], {
 				cwd: enginePath,

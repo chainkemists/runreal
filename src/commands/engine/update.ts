@@ -1,7 +1,7 @@
 import { Command, ValidationError } from '/deps.ts'
 import { GlobalOptions } from '/index.ts'
 import { deleteEngineHooks, exec, isGitRepo, runEngineSetup } from '/lib/utils.ts'
-import { mergeWithCliOptions, validateConfig } from '/lib/config.ts'
+import { config } from '/lib/config.ts'
 import { CliOptions } from '/lib/types.ts'
 
 export type UpdateOptions = typeof update extends Command<any, any, infer Options, any, any> ? Options
@@ -41,7 +41,7 @@ export const update = new Command<GlobalOptions>()
 			// gitDependenciesCachePath,
 			dryRun,
 		} = options as UpdateOptions
-		const cfg = validateConfig(mergeWithCliOptions(options as CliOptions))
+		const cfg = config.get(options as CliOptions)
 		const isRepo = await isGitRepo(cfg.engine.path)
 		if (!isRepo) {
 			throw new ValidationError(
