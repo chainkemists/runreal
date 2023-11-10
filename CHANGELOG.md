@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/chainkemists/runreal/compare/v1.4.0...v1.5.0) (2023-11-10)
+
+
+### Features
+
+* add logger module ([5cb35a1](https://github.com/chainkemists/runreal/commit/5cb35a1e5ec817870c21f982e6d3277bf9066727))
+* experimental kv metadata system ([2883f24](https://github.com/chainkemists/runreal/commit/2883f243c1293eec014a5c729aa798d73fc0b3c5))
+* resolve relative paths in config ([65ae76d](https://github.com/chainkemists/runreal/commit/65ae76d2281a1d32672c0495df358b19dc939dc1))
+
 ## [1.4.0](https://github.com/chainkemists/runreal/compare/v1.3.0...v1.4.0) (2023-11-09)
 
 
