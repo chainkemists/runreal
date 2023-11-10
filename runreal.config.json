@@ -73,11 +73,11 @@
       "name": "Package Client",
       "steps": [
         { "command": "runreal debug" },
-        { "command": "runreal engine update", "args": ["--setup"] },
         {
           "command": "runreal buildgraph run",
           "args": [
             "${project.path}\\BuildGraph\\Build.xml",
+			"-set:BuildId=${build.id}",
             "-set:ProjectName=${project.name}",
             "-set:ProjectPath=${project.path}",
             "-set:OutputPath=${build.path}",
@@ -85,7 +85,8 @@
             "-set:ServerTargetName=${project.name}Server",
             "-Target=Package Clients"
           ]
-        }
+        },
+		{ "command": "ls", "args": ["${build.path}\\${project.name}Game-${build.id}-Win64-Development.zip"] }
       ]
     },
     {

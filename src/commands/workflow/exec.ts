@@ -12,7 +12,11 @@ const getSubstitutions = (cfg: RunrealConfig) => ({
 	'engine.path': cfg.engine.path,
 	'project.path': cfg.project.path,
 	'project.name': cfg.project.name,
+	'build.id': cfg.build.id,
 	'build.path': cfg.build.path,
+	'build.branch': cfg.build.branchSafe,
+	'build.commit': cfg.build.commitShort,
+	'buildkite.buildNumber': cfg.buildkite.buildNumber,
 })
 
 // Sanitize the input values to prevent command injection
@@ -29,7 +33,7 @@ function interpolateCommand(input: string[], substitutions: Record<string, strin
 	const placeholderRegex = /\$\{([^}]+)\}/g
 	return input.map((arg) =>
 		arg.replace(placeholderRegex, (_, key) => {
-			return key in substitutions ? sanitizeInput(substitutions[key]) : _
+			return key in substitutions ? substitutions[key] : _
 		})
 	)
 }

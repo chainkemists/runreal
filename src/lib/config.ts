@@ -1,5 +1,14 @@
 import { deepmerge, path, ValidationError } from '/deps.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
+import { execSync } from '/lib/utils.ts'
+
+// TODO(xenon): setup async init of config on startup to populate initial values
+// then merge with the provided config file and cli options
+const commit = execSync('git', ['rev-parse', 'HEAD'], {quiet: true}).output.trim()
+const commitShort = execSync('git', ['rev-parse', '--short', 'HEAD'], {quiet: true}).output.trim()
+const branch = execSync('git', ['branch', '--show-current'], {quiet: true}).output.trim()
+const branchSafe = branch.replace(/[^a-z0-9]/gi, '-')
+const id = `${branchSafe}-${commitShort}`
 
 export let config: Partial<RunrealConfig> = {
 	engine: {
@@ -11,6 +20,17 @@ export let config: Partial<RunrealConfig> = {
 	},
 	build: {
 		path: '',
+		id,
+		branch,
+		branchSafe,
+		commit,
+		commitShort,
+	},
+	buildkite: {
+		branch: Deno.env.get('BUILDKITE_BRANCH') || branch,
+		buildNumber: Deno.env.get('BUILDKITE_BUILD_NUMBER') || '0',
+		buildCheckoutPath: Deno.env.get('BUILDKITE_BUILD_CHECKOUT_PATH') || Deno.cwd(),
+		buildPipelineSlug: Deno.env.get('BUILDKITE_PIPELINE_SLUG') || '',
 	},
 }
 
