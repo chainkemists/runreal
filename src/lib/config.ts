@@ -21,7 +21,7 @@ class Config {
 		},
 		buildkite: {
 			branch: Deno.env.get('BUILDKITE_BRANCH') || '',
-			checkout: Deno.env.get('BUILDKITE_CHECKOUT') || '',
+			checkout: Deno.env.get('BUILDKITE_COMMIT') || '',
 			buildNumber: Deno.env.get('BUILDKITE_BUILD_NUMBER') || '0',
 			buildCheckoutPath: Deno.env.get('BUILDKITE_BUILD_CHECKOUT_PATH') || Deno.cwd(),
 			buildPipelineSlug: Deno.env.get('BUILDKITE_PIPELINE_SLUG') || '',
