@@ -46,6 +46,7 @@ export interface BuildConfig {
 
 export interface BuildkiteMetadata {
 	branch: string
+	checkout: string
 	buildNumber: string
 	buildCheckoutPath: string
 	buildPipelineSlug: string

@@ -21,6 +21,7 @@ class Config {
 		},
 		buildkite: {
 			branch: Deno.env.get('BUILDKITE_BRANCH') || '',
+			checkout: Deno.env.get('BUILDKITE_CHECKOUT') || '',
 			buildNumber: Deno.env.get('BUILDKITE_BUILD_NUMBER') || '0',
 			buildCheckoutPath: Deno.env.get('BUILDKITE_BUILD_CHECKOUT_PATH') || Deno.cwd(),
 			buildPipelineSlug: Deno.env.get('BUILDKITE_PIPELINE_SLUG') || '',
@@ -147,7 +148,13 @@ class Config {
 		const cwd = this.config.project?.path
 		if (!cwd) return
 		try {
-			const branch = execSync('git', ['branch', '--show-current'], { cwd, quiet: true }).output.trim()
+			let branch
+			// On Buildkite, use the BUILDKITE_BRANCH env var as we may be in a detached HEAD state
+			if (Deno.env.get('BUILDKITE_BRANCH')) {
+				branch = this.config.buildkite?.branch || ''
+			} else {
+				branch = execSync('git', ['branch', '--show-current'], { cwd, quiet: true }).output.trim()
+			}
 			const branchSafe = branch.replace(/[^a-z0-9]/gi, '-')
 			const commit = execSync('git', ['rev-parse', 'HEAD'], { cwd, quiet: true }).output.trim()
 			const commitShort = execSync('git', ['rev-parse', '--short', 'HEAD'], { quiet: true }).output.trim()
