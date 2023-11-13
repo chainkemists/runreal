@@ -33,8 +33,8 @@ export const install = new Command()
 	.arguments('[source:string] [destination:file]')
 	.action(async (
 		options,
-		source = 'https://github.com/Chainkemists/UnrealEngine-Internal',
-		destination = 'E:\\RX\\UnrealEngine',
+		source,
+		destination,
 		...args
 	) => {
 		const {
@@ -47,6 +47,15 @@ export const install = new Command()
 			// gitMirrorsPath,
 		} = options as InstallOptions
 		const cfg = config.get(options as CliOptions)
+		source = source || cfg.engine.source
+		destination = destination || cfg.engine.path
+
+		if (!source) {
+			throw new ValidationError('missing source')
+		}
+		if (!destination) {
+			throw new ValidationError('missing destination')
+		}
 		try {
 			await Deno.mkdir(destination)
 		} catch (e) {
@@ -55,9 +64,11 @@ export const install = new Command()
 					console.log(`Deleting ${destination}`)
 					await Deno.remove(destination, { recursive: true })
 				} else {
-					throw new ValidationError(
+					// Exit with a message instead of error so we can chain this install command
+					console.log(
 						`Destination ${destination} already exists, use --force to overwrite.`,
 					)
+					return
 				}
 			}
 		}

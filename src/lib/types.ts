@@ -19,6 +19,7 @@ export type CliOptions = Partial<
 
 export interface EngineConfig {
 	path: string
+	source?: string
 	branch?: string
 	cachePath?: string
 }
