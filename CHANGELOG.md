@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/chainkemists/runreal/compare/v1.5.1...v1.5.2) (2023-11-13)
+
+
+### Bug Fixes
+
+* use BUILDKITE_CHECKOUT env on Buildkite ([7a94950](https://github.com/chainkemists/runreal/commit/7a949506d1b78ed056e7fc41a22ecdd4b1d2c722))
+
 ## [1.5.1](https://github.com/chainkemists/runreal/compare/v1.5.0...v1.5.1) (2023-11-13)
 
 
