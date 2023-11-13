@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/chainkemists/runreal/compare/v1.5.0...v1.5.1) (2023-11-13)
+
+
+### Bug Fixes
+
+* engine install cmd exits gracefully ([ad45fb1](https://github.com/chainkemists/runreal/commit/ad45fb16be864a3c69df6cb4f5afb7d3457d0a4c))
+
 ## [1.5.0](https://github.com/chainkemists/runreal/compare/v1.4.0...v1.5.0) (2023-11-10)
 
 
