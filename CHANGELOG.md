@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/chainkemists/runreal/compare/v1.5.2...v1.5.3) (2023-11-13)
+
+
+### Bug Fixes
+
+* correct BUILDKITE_COMMIT variable ([819c72f](https://github.com/chainkemists/runreal/commit/819c72f6b99e267f29b2fa4bb5db2e9b45db1e12))
+
 ## [1.5.2](https://github.com/chainkemists/runreal/compare/v1.5.1...v1.5.2) (2023-11-13)
 
 
