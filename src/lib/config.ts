@@ -1,4 +1,4 @@
-import { deepmerge, dotenv, path, ValidationError } from '/deps.ts'
+import { deepmerge, dotenv, path, ValidationError, ulid } from '/deps.ts'
 import { CliOptions, RunrealConfig } from '/lib/types.ts'
 import { execSync } from '/lib/utils.ts'
 
@@ -67,7 +67,8 @@ class Config {
 
 	determineBuildId() {
 		const build = this.config.build
-		if (!build) return ''
+		if (!build) return ulid()
+		if (build.branchSafe === '' || build.commitShort === '') return ulid()
 		const id = `${build.branchSafe}-${build.commitShort}`
 		return id
 	}
@@ -153,11 +154,11 @@ class Config {
 			if (Deno.env.get('BUILDKITE_BRANCH')) {
 				branch = this.config.buildkite?.branch || ''
 			} else {
-				branch = execSync('git', ['branch', '--show-current'], { cwd, quiet: true }).output.trim()
+				branch = execSync('git', ['branch', '--show-current'], { cwd, quiet: false }).output.trim()
 			}
 			const branchSafe = branch.replace(/[^a-z0-9]/gi, '-')
-			const commit = execSync('git', ['rev-parse', 'HEAD'], { cwd, quiet: true }).output.trim()
-			const commitShort = execSync('git', ['rev-parse', '--short', 'HEAD'], { quiet: true }).output.trim()
+			const commit = execSync('git', ['rev-parse', 'HEAD'], { cwd, quiet: false }).output.trim()
+			const commitShort = execSync('git', ['rev-parse', '--short', 'HEAD'], { quiet: false }).output.trim()
 
 			this.config.build = {
 				...this.config.build,
